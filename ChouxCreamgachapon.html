@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>กาชาปองความคิดถึง</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream: #FFF7EF;
+    --pink: #FFC9E3;
+    --pink-deep: #FF8FC7;
+    --lavender: #E5D6FF;
+    --mint: #C6F3E6;
+    --gold: #FFD166;
+    --plum: #5B3A5C;
+    --plum-soft: #8A6A8C;
+    --white: #FFFFFF;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: radial-gradient(circle at 20% 10%, #FFEFFA 0%, #F7ECFF 45%, #EAE0FF 100%);
+    font-family: 'Prompt', sans-serif;
+    color: var(--plum);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 48px 20px 80px;
+    overflow-x: hidden;
+  }
+
+  .eyebrow {
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--plum-soft);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  h1 {
+    font-family: 'Mali', cursive, sans-serif;
+    font-weight: 700;
+    font-size: clamp(32px, 6vw, 52px);
+    margin: 0 0 6px;
+    color: var(--plum);
+    text-align: center;
+  }
+
+  .sub {
+    font-size: 16px;
+    color: var(--plum-soft);
+    margin-bottom: 44px;
+    text-align: center;
+    max-width: 380px;
+  }
+
+  /* ---------- MACHINE ---------- */
+  .machine-wrap {
+    position: relative;
+    width: min(340px, 82vw);
+  }
+
+  .machine-body {
+    display: block;
+    width: 100%;
+    filter: drop-shadow(0 24px 30px rgba(140, 90, 160, 0.25));
+  }
+
+  .capsule-in-dome {
+    transform-origin: center;
+    animation: float-bob 3.4s ease-in-out infinite;
+  }
+  .capsule-in-dome:nth-child(2) { animation-delay: -0.6s; }
+  .capsule-in-dome:nth-child(3) { animation-delay: -1.4s; }
+  .capsule-in-dome:nth-child(4) { animation-delay: -2.1s; }
+  .capsule-in-dome:nth-child(5) { animation-delay: -0.3s; }
+
+  @keyframes float-bob {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-4px) rotate(3deg); }
+  }
+
+  .crank-group {
+    cursor: pointer;
+    transform-origin: 300px 200px;
+    transition: filter 0.15s ease;
+  }
+  .crank-group:hover .crank-knob { fill: #FF7FBE; }
+  .crank-group.turning { animation: crank-spin 0.6s ease-in-out; }
+
+  @keyframes crank-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .crank-hint {
+    position: absolute;
+    bottom: 8px;
+    right: -6px;
+    font-family: 'Mali', cursive, sans-serif;
+    font-size: 12px;
+    color: var(--pink-deep);
+    background: var(--white);
+    padding: 4px 10px;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(255, 143, 199, 0.35);
+    pointer-events: none;
+    animation: nudge 1.8s ease-in-out infinite;
+  }
+  @keyframes nudge {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(-4px); }
+  }
+
+  /* falling capsule */
+  .falling-capsule {
+    position: absolute;
+    left: 50%;
+    top: 190px;
+    width: 46px;
+    height: 46px;
+    margin-left: -23px;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .falling-capsule.drop {
+    animation: drop-fall 0.9s cubic-bezier(.5,0,.75,0) forwards;
+  }
+  @keyframes drop-fall {
+    0% { opacity: 1; top: 190px; transform: rotate(0deg); }
+    85% { opacity: 1; top: 330px; transform: rotate(300deg); }
+    100% { opacity: 1; top: 322px; transform: rotate(340deg); }
+  }
+
+  .tray {
+    position: absolute;
+    bottom: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 130px;
+    height: 14px;
+  }
+
+  /* ---------- NOTE CARD ---------- */
+  .note-stage {
+    margin-top: 26px;
+    width: min(360px, 88vw);
+    min-height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .note-card {
+    width: 100%;
+    background: var(--white);
+    border-radius: 22px;
+    padding: 28px 26px;
+    text-align: center;
+    box-shadow: 0 18px 34px rgba(140, 90, 160, 0.18);
+    position: relative;
+    opacity: 0;
+    transform: translateY(14px) scale(0.94);
+  }
+  .note-card.show {
+    animation: pop-in 0.55s cubic-bezier(.34,1.56,.64,1) forwards;
+  }
+  @keyframes pop-in {
+    0% { opacity: 0; transform: translateY(14px) scale(0.9); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .note-card::before {
+    content: '';
+    position: absolute;
+    top: -9px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 18px;
+    height: 18px;
+    background: var(--white);
+  }
+
+  .note-label {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--pink-deep);
+    font-weight: 700;
+    margin-bottom: 10px;
+    font-family: 'Mali', cursive, sans-serif;
+  }
+
+  .note-text {
+    font-family: 'Mali', cursive, sans-serif;
+    font-size: clamp(19px, 4vw, 23px);
+    font-weight: 600;
+    line-height: 1.45;
+    color: var(--plum);
+  }
+
+  .placeholder-text {
+    color: var(--plum-soft);
+    font-size: 15px;
+    text-align: center;
+    line-height: 1.6;
+    max-width: 260px;
+  }
+
+  /* ---------- BUTTON ---------- */
+  .again-btn {
+    margin-top: 22px;
+    font-family: 'Mali', cursive, sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--white);
+    background: linear-gradient(135deg, var(--pink-deep), #FFA6D6);
+    border: none;
+    padding: 13px 30px;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(255, 143, 199, 0.4);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(6px);
+    transition: opacity 0.4s ease, transform 0.4s ease, box-shadow 0.15s ease;
+  }
+  .again-btn.show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+  .again-btn:hover {
+    box-shadow: 0 12px 24px rgba(255, 143, 199, 0.55);
+    transform: translateY(-2px);
+  }
+  .again-btn:active {
+    transform: translateY(0px) scale(0.97);
+  }
+
+  .counter {
+    margin-top: 14px;
+    font-size: 12px;
+    color: var(--plum-soft);
+    letter-spacing: 0.04em;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="eyebrow">เครื่องเล็กๆ เครื่องนี้ ทำมาเพื่อน้องคนเดียว</div>
+  <h1>กาชาปองความคิดถึง</h1>
+  <p class="sub">หมุนแกนแล้วดูว่าจะได้อะไรออกมา หมุนใหม่ได้เรื่อยๆ นะ ไม่มีวันหมด</p>
+
+  <div class="machine-wrap">
+    <svg class="machine-body" viewBox="0 0 400 460" xmlns="http://www.w3.org/2000/svg">
+      <!-- base -->
+      <rect x="60" y="330" width="280" height="110" rx="24" fill="#FFDCEE"/>
+      <rect x="60" y="330" width="280" height="110" rx="24" fill="none" stroke="#FF8FC7" stroke-width="3"/>
+      <!-- coin slot -->
+      <rect x="86" y="355" width="34" height="10" rx="5" fill="#FF8FC7"/>
+      <!-- output slot -->
+      <rect x="150" y="404" width="100" height="18" rx="9" fill="#5B3A5C" opacity="0.15"/>
+      <rect x="155" y="406" width="90" height="12" rx="6" fill="#3D2A3E"/>
+
+      <!-- neck -->
+      <rect x="150" y="290" width="100" height="46" rx="12" fill="#FFE8F5"/>
+      <rect x="150" y="290" width="100" height="46" rx="12" fill="none" stroke="#FF8FC7" stroke-width="3"/>
+
+      <!-- dome -->
+      <path d="M 80 300 A 120 120 0 0 1 320 300 L 320 300 Q 320 200 200 200 Q 80 200 80 300 Z" fill="#EAF9F5" stroke="#B7E9DC" stroke-width="3"/>
+      <ellipse cx="200" cy="300" rx="120" ry="20" fill="#EAF9F5" stroke="#B7E9DC" stroke-width="3"/>
+      <path d="M 110 250 Q 120 210 170 205" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" fill="none" opacity="0.7"/>
+
+      <!-- capsules inside dome -->
+      <g class="capsule-in-dome">
+        <circle cx="150" cy="270" r="20" fill="#FFB5D8"/>
+        <path d="M 130 270 A 20 20 0 0 1 170 270" fill="#FF8FC7"/>
+      </g>
+      <g class="capsule-in-dome">
+        <circle cx="200" cy="250" r="18" fill="#B5E8FF"/>
+        <path d="M 182 250 A 18 18 0 0 1 218 250" fill="#7FCBFF"/>
+      </g>
+      <g class="capsule-in-dome">
+        <circle cx="245" cy="275" r="19" fill="#FFF3B0"/>
+        <path d="M 226 275 A 19 19 0 0 1 264 275" fill="#FFD166"/>
+      </g>
+      <g class="capsule-in-dome">
+        <circle cx="180" cy="290" r="16" fill="#C9F2C7"/>
+        <path d="M 164 290 A 16 16 0 0 1 196 290" fill="#8FDA8C"/>
+      </g>
+      <g class="capsule-in-dome">
+        <circle cx="225" cy="240" r="15" fill="#E0C3FC"/>
+        <path d="M 210 240 A 15 15 0 0 1 240 240" fill="#C89AF0"/>
+      </g>
+
+      <!-- crank -->
+      <g class="crank-group" id="crankGroup">
+        <circle cx="300" cy="200" r="22" fill="#FFDCEE" stroke="#FF8FC7" stroke-width="3"/>
+        <rect x="296" y="178" width="8" height="30" rx="4" fill="#FF8FC7"/>
+        <circle class="crank-knob" cx="300" cy="176" r="12" fill="#FFA6D6"/>
+      </g>
+    </svg>
+
+    <div class="crank-hint" id="crankHint">หมุนสิ!</div>
+
+    <svg class="falling-capsule" id="fallingCapsule" viewBox="0 0 46 46">
+      <circle cx="23" cy="23" r="20" fill="#FFB5D8"/>
+      <path d="M 5 23 A 18 18 0 0 1 41 23" fill="#FF8FC7"/>
+    </svg>
+  </div>
+
+  <div class="note-stage" id="noteStage">
+    <div class="placeholder-text">แอบกระซิบ — กดที่แกนหมุนด้านบนเพื่อดูข้อความแรกเลย 💌</div>
+  </div>
+
+  <button class="again-btn" id="againBtn">หมุนอีกครั้ง ↻</button>
+  <div class="counter" id="counter"></div>
+
+<script>
+  // Edit this list freely — add or change lines anytime!
+  const messages = [
+    "กูดมอนิ่งคับบน้องคนสวย",
+    "วันนี้น้องยิ้มรึยัง ยิ้มน่ารักขนาดโน้นนน",
+    "งานเยอะไหมคะ เจมเป็นกำลังใจให้น้า",
+    "คิดถึงงง ขอกอดขอจุ้บหน่อย",
+    "ทานข้าวเช้ารึยังคับ เจมเป็นห่วง",
+    "อยากกินขนมอะไรร เจมหาให้!",
+    "วันนี้คุณทานเวย์โปรตีนฝีมือแฟนหรือยัง",
+    "เย็นนี้ไปหาอะไรอร่อยๆกินกันนะะ",
+    "ใครทำน้องหน้าบูดรึเปล่าา หายเพี่ยง",
+    "ประกาศตามหาคนเก่งของเจม อ้ะ เจอแล้ว",
+    "กรุณาเลือกบุฟเฟ่ต์มา 1 ร้าน",
+    "คูปองซื้อเสื้อผ้า 1 ตัว กรุณาแคปมาอ้อน",
+    "วันนี้แต่งตัวน่ารักมากเลยค่ะ น่ารักเป็นปกติทุกวันเลย",
+    "น้องสวยจังอยากชมท้างวัน"
+  ];
+
+  let lastIndex = -1;
+  let turnCount = 0;
+
+  const crankGroup = document.getElementById('crankGroup');
+  const fallingCapsule = document.getElementById('fallingCapsule');
+  const noteStage = document.getElementById('noteStage');
+  const againBtn = document.getElementById('againBtn');
+  const crankHint = document.getElementById('crankHint');
+  const counter = document.getElementById('counter');
+
+  const capsuleColors = [
+    { body: '#FFB5D8', cap: '#FF8FC7' },
+    { body: '#B5E8FF', cap: '#7FCBFF' },
+    { body: '#FFF3B0', cap: '#FFD166' },
+    { body: '#C9F2C7', cap: '#8FDA8C' },
+    { body: '#E0C3FC', cap: '#C89AF0' },
+  ];
+
+  function pickMessage() {
+    if (messages.length === 1) return messages[0];
+    let idx;
+    do {
+      idx = Math.floor(Math.random() * messages.length);
+    } while (idx === lastIndex);
+    lastIndex = idx;
+    return messages[idx];
+  }
+
+  function turnCrank() {
+    if (crankGroup.classList.contains('turning')) return;
+
+    crankHint.style.display = 'none';
+    crankGroup.classList.add('turning');
+
+    // color the falling capsule randomly
+    const c = capsuleColors[Math.floor(Math.random() * capsuleColors.length)];
+    fallingCapsule.querySelector('circle').setAttribute('fill', c.body);
+    fallingCapsule.querySelector('path').setAttribute('fill', c.cap);
+
+    setTimeout(() => {
+      crankGroup.classList.remove('turning');
+    }, 600);
+
+    // drop capsule
+    fallingCapsule.classList.remove('drop');
+    void fallingCapsule.offsetWidth; // reflow to restart animation
+    fallingCapsule.classList.add('drop');
+
+    setTimeout(() => {
+      revealMessage();
+    }, 850);
+  }
+
+  function revealMessage() {
+    const msg = pickMessage();
+    turnCount++;
+
+    noteStage.innerHTML = `
+      <div class="note-card" id="noteCard">
+        <div class="note-label">แคปซูลที่ ${String(turnCount).padStart(2,'0')}</div>
+        <div class="note-text">${msg}</div>
+      </div>
+    `;
+    requestAnimationFrame(() => {
+      document.getElementById('noteCard').classList.add('show');
+    });
+
+    againBtn.classList.add('show');
+    counter.textContent = 'เปิดไปแล้ว ' + turnCount + ' แคปซูล';
+  }
+
+  crankGroup.addEventListener('click', turnCrank);
+  againBtn.addEventListener('click', turnCrank);
+</script>
+
+</body>
+</html>
